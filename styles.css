@@ -1,0 +1,46 @@
+#title{
+    text-align: center;
+    font-size: 1.5em;
+}
+
+#turn{
+    display: flex;
+    justify-content: space-around;
+    font-size: 2em;
+}
+
+main{
+    display: flex;
+    justify-content: center;
+}
+
+#tic-tac-toe{
+    background-color: black;
+    display: inline-grid;
+    align-content: center;
+    justify-content: center;
+    gap: 5px;
+    grid-template-columns: 15vw 15vw 15vw;
+    grid-template-rows: 15vw 15vw 15vw;
+}
+
+.square{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(159, 159, 206);
+}
+
+img{
+    max-width: 80%;
+    max-height: 80%;
+}
+
+#indicator{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 50px;
+    width: auto;
+    
+}
