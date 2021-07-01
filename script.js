@@ -16,18 +16,16 @@ let playerO = Player("o");
 
 function square(div){
     const squareDiv = div;
-    // const x = squareDiv.getAttribute("data-x");
-    // const y = squareDiv.getAttribute("data-y");
-
     let markedBy = null;
-    
-    const isMarkedBy = (player) => {
-        markedBy = player.playerTurn;
-        addImgToDiv(player.url, squareDiv);
-        return {markedBy, isMarkedBy};
-    }
 
-    return {markedBy, isMarkedBy};
+    const isMarked = () => squareObj.markedBy;
+    const isMarkedBy = (player) => {
+        squareObj.markedBy = player.playerTurn;
+        addImgToDiv(player.url, squareObj.squareDiv);
+        // return {markedBy, isMarkedBy};
+    };
+    const squareObj = {markedBy, isMarked, isMarkedBy, squareDiv}
+    return squareObj;
 }
 
 const Board = ((playerX, playerO, dimension) => {
@@ -64,12 +62,16 @@ const Board = ((playerX, playerO, dimension) => {
         let y = parseInt(squareDiv.getAttribute("data-y"));
 
         // skip marked square   
-        if (squares[y][x].markedBy) {
+        if (squares[y][x].isMarked()) {
             console.log("marked!!");
             return;
         }
+        
+        squares[y][x].isMarkedBy(currentPlayer);
 
-        squares[y][x] = squares[y][x].isMarkedBy(currentPlayer);
+        console.log(squares[y][x]);
+        console.log(squares[y][x].markedBy);
+        console.log(squares[y][x].isMarked());
 
         if (checkWinCondition(y, x)){
             end();
@@ -121,7 +123,9 @@ const Board = ((playerX, playerO, dimension) => {
             let currentSquare = squares[fixedY][x];
             let rightOfCurrentSquare = squares[fixedY][x+1];
 
-            if(currentSquare.markedBy === rightOfCurrentSquare.markedBy){
+            
+
+            if(currentSquare.isMarked() === rightOfCurrentSquare.isMarked()){
                 // increase count if there are 2 same marks (o and o or x and x)
                 count++;
             }
@@ -140,7 +144,7 @@ const Board = ((playerX, playerO, dimension) => {
         for (let x = currentX; x >= 1; x--){
             let currentSquare = squares[fixedY][x];
             let leftOfCurrentSquare = squares[fixedY][x-1];
-            if(currentSquare.markedBy === leftOfCurrentSquare.markedBy){
+            if(currentSquare.isMarked() === leftOfCurrentSquare.isMarked()){
                 // increase count if there are 2 same marks (o and o or x and x)
                 count++;
             }
@@ -165,7 +169,7 @@ const Board = ((playerX, playerO, dimension) => {
         for (let y = currentY; y < dimension - 1; y++){
             let currentSquare = squares[y][fixedX];
             let underCurrentSquare = squares[y+1][fixedX];
-            if(currentSquare.markedBy === underCurrentSquare.markedBy){
+            if(currentSquare.isMarked() === underCurrentSquare.isMarked()){
                 count++;
             }
             else{
@@ -182,7 +186,7 @@ const Board = ((playerX, playerO, dimension) => {
         for (let y = currentY; y >= 1; y--){
             let currentSquare = squares[y][fixedX];
             let aboveCurrentSquare = squares[y-1][fixedX];
-            if(currentSquare.markedBy === aboveCurrentSquare.markedBy){
+            if(currentSquare.isMarked() === aboveCurrentSquare.isMarked()){
                 count++;
             }
             else{
@@ -206,7 +210,7 @@ const Board = ((playerX, playerO, dimension) => {
             let currentSquare = squares[y][x];
             let nextSquare = squares[y+1][x+1];
 
-            if (currentSquare.markedBy === nextSquare.markedBy){
+            if (currentSquare.isMarked() === nextSquare.isMarked()){
                 count++;
                 if (count === 3){
                     return true;
@@ -221,7 +225,7 @@ const Board = ((playerX, playerO, dimension) => {
         for(let x = currentX, y = currentY; x >= 1 && y >= 1; x--, y--){
             let currentSquare = squares[y][x];
             let nextSquare = squares[y-1][x-1];
-            if (currentSquare.markedBy === nextSquare.markedBy){
+            if (currentSquare.isMarked() === nextSquare.isMarked()){
                 count++;
                 if (count === 3){
                     return true;
